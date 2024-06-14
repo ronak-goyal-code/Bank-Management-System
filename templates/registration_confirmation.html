@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Confirmation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Registration Successful!</h2>
+        <p>Your Customer ID is: {{ customer_id }}</p>
+        <p>Your Account Number is: {{ account_number }}</p>
+        <p>Note: Please remember your customer ID for future reference.</p>
+        <p><a href="{{ url_for('login') }}" class="btn btn-primary">Proceed to Login</a></p>
+    </div>
+</body>
+</html>

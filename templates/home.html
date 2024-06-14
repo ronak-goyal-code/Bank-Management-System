@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS */
+        body {
+            padding: 20px;
+        }
+        .account-info, .loan-info {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .account-info li, .loan-info li {
+            list-style-type: none;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Welcome to Your Bank</h1>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="mt-4">Account Information:</h2>
+                {% if accounts %}
+                {% for account in accounts %}
+                <div class="account-info">
+                    <h3>Account Details</h3>
+                    <ul>
+                        <li><strong>Account Number:</strong> {{ account[0] }}</li>
+                        <li><strong>Customer ID:</strong> {{ account[1] }}</li>
+                        <li><strong>Branch ID:</strong> {{ account[2] }}</li>
+                        <li><strong>Account Type:</strong> {{ account[3] }}</li>
+                        <li><strong>Balance:</strong> {{ account[4] }}</li>
+                        <li><strong>Status:</strong> {{ account[5] }}</li>
+                    </ul>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>No accounts found.</p>
+                {% endif %}
+            </div>
+
+            <div class="col-md-6">
+                <h2 class="mt-4">Active Loan Details:</h2>
+                {% if active_loans %}
+                {% for loan in active_loans %}
+                <div class="loan-info">
+                    <h3>Loan Details</h3>
+                    <ul>
+                        <li><strong>Loan ID:</strong> {{ loan[0] }}</li>
+                        <li><strong>Customer ID:</strong> {{ loan[1] }}</li>
+                        <li><strong>Account Number:</strong> {{ loan[2] }}</li>
+                        <li><strong>Start Date:</strong> {{ loan[6] }}</li>
+                        <li><strong>End Date:</strong> {{ loan[7] }}</li>
+                        <li><strong>Term Length:</strong> {{ loan[5] }}</li>
+                        <li><strong>Loan Amount:</strong> {{ loan[3] }}</li>
+                        <li><strong>Interest Rate:</strong> {{ loan[4] }}</li>
+                        <li><strong>Amount Payable:</strong> {{ loan[8] }}</li>
+                        <li><strong>Status:</strong> {{ loan[9] }}</li>
+                    </ul>
+                    <form action="/loan_payment" method="POST">
+                        <input type="hidden" name="loan_id" value="{{ loan[0] }}">
+                        <button type="submit" class="btn btn-primary">Make Payment</button>
+                    </form>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>No active loans found.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Deposit, Withdraw, Transfer, Loan buttons -->
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <h3>Deposit Money</h3>
+                <form action="/deposit" method="POST">
+                    <div class="form-group">
+                        <label for="deposit_amount">Amount:</label>
+                        <input type="number" class="form-control" id="deposit_amount" name="deposit_amount" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Deposit</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h3>Withdraw Money</h3>
+                <form action="/withdraw" method="POST">
+                    <div class="form-group">
+                        <label for="withdraw_amount">Amount:</label>
+                        <input type="number" class="form-control" id="withdraw_amount" name="withdraw_amount" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Withdraw</button>
+                </form>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <h3>Transfer Money</h3>
+                <form action="/transfer" method="POST">
+                    <div class="form-group">
+                        <label for="transfer_amount">Amount:</label>
+                        <input type="number" class="form-control" id="transfer_amount" name="transfer_amount" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient_account">Recipient Account Number:</label>
+                        <input type="number" class="form-control" id="recipient_account" name="recipient_account" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Transfer</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h3>Take Loan</h3>
+                <a href="{{ url_for('loan') }}" class="btn btn-primary">Take Loan</a>
+            </div>
+        </div>
+
+        <!-- Logout button -->
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <form action="/logout" method="POST">
+                    <button type="submit" class="btn btn-danger">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
